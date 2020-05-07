@@ -1,0 +1,67 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+# SVM Assignment 2
+### By Alysha Velasquez 
+
+#### 1) Recreate the R part of this experiment using your computer 
+```{r}
+library(e1071)
+srd1 <- read.csv("~/Desktop/Velasquez-SVMAssignment2-W6/srd1.csv", header=FALSE)
+srd2 <- read.csv("~/Desktop/Velasquez-SVMAssignment2-W6/srd2.csv", header=FALSE)
+y1<-rep(0,1000)
+y2<-rep(1,1000)
+y<-factor(c(y1,y2))
+x<-rbind(srd1,srd2)
+model<-svm(x,y,type="C-classification")
+p<-predict(model,x)
+summary(p)
+plot(array(p))
+```
+
+#### 2) See if you can find other ways to display the predictions 
+
+**Bar Chart**
+
+```{r}
+plot(p)
+```
+
+**Scatterplot**
+```{r}
+z=plot(srd1,col="red")
+points(srd2,col="blue")
+```
+
+**Scatterplot With Ambiguity**
+
+```{r}
+library(scatterplot3d)
+i<-as.matrix(as.numeric(predict(model,x[1:1000,]))-1)
+j<-as.matrix(as.numeric(predict(model,x[1001:2000,])))-2
+j<-abs(j)
+z<-c(i,j)
+scatterplot3d(x[,1],x[,2],z,pch=1,highlight.3d=TRUE,type="h",main="SVM_2",xlab="x",ylab="y",zlab="ambiguity",angle=65)
+```
+
+#### 3) Train the 1,000 length data and then predict the 10,000 length data 
+
+```{r}
+rd1<-read.csv("~/Desktop/Velasquez-SVMAssignment2-W6/rd1.csv", header=FALSE)
+rd2<-read.csv("~/Desktop/Velasquez-SVMAssignment2-W6/rd2.csv", header=FALSE)
+x2<-rbind(rd1,rd2)
+p<-predict(model,x2)
+summary(p)
+plot(array(p))
+z=plot(rd1,col="green")
+points(rd2,col="blue")
+```
+
+
+
+
+
+
+
